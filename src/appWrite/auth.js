@@ -1,15 +1,17 @@
-import { Client, Account, ID, Databases, Query } from 'appwrite';
+import { Client, Account, ID, Databases, Query, Avatars } from 'appwrite';
 import { appwriteConfig } from './appConfig';
 class AuthService {
   #_client = new Client();
   #_account;
   #_database;
+  #_avatars;
   constructor() {
     this.#_client
       .setEndpoint(appwriteConfig.appWriteEndPoint)
       .setProject(appwriteConfig.appWriteProject);
     this.#_account = new Account(this.#_client);
     this.#_database = new Databases(this.#_client);
+    this.#_avatars = new Avatars(this.#_client);
   }
   async loginWithCredentials({ email, password }) {
     try {
@@ -103,12 +105,14 @@ class AuthService {
       const tempUser = await this.getUserByEmailAddress(email);
       if (tempUser) throw new Error('email is already taken');
       const account = await this.#_account.create(ID.unique(), email, password);
+      const avatar = this.#_avatars.getInitials(username);
+
       if (account) {
         await this.#_database.createDocument(
           appwriteConfig.appWriteDatabase,
           appwriteConfig.appWriteUsersCollectionID,
           ID.unique(),
-          { username, email }
+          { username, email, avatar }
         );
         return true;
       } else {

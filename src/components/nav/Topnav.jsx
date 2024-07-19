@@ -133,7 +133,10 @@ const Topnav = ({ setShowModel }) => {
           <NavLink to='/'>home</NavLink>
         </motion.div>
         <motion.div variants={linkVariants}>
-          <NavLink to='/menus'>all menus</NavLink>
+          <NavLink to='/menus'> menu</NavLink>
+        </motion.div>
+        <motion.div variants={linkVariants}>
+          <NavLink to='/partner'> partner with us</NavLink>
         </motion.div>
         {user ? (
           <>

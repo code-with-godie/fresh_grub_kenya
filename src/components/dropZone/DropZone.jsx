@@ -1,10 +1,8 @@
 import React, { useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 import styled from 'styled-components';
-
 const Wrapper = styled.div`
   display: flex;
-  /* justify-content: center; */
   align-items: center;
   padding: 0.5rem;
   height: 200px;
@@ -15,7 +13,7 @@ const Wrapper = styled.div`
 const Container = styled.div`
   padding: 0.5rem;
   flex: 1;
-  border: 1px dotted gray;
+  border: 1px dotted var(--color-golden);
   height: 100%;
   padding: 0.5rem;
   display: flex;
@@ -25,30 +23,25 @@ const Container = styled.div`
   justify-content: center;
 `;
 const Select = styled.div`
-  padding: 0.5rem;
-  font-size: 1rem;
-  background-color: var(--faded_blue);
+  background-color: var(--color-golden);
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
   cursor: pointer;
+  color: #000000dc;
 `;
-const DropZone = ({ setFiles, single, description }) => {
+const DropZone = ({ setFiles, description }) => {
   const onDrop = useCallback(
     acceptedFiles => {
       acceptedFiles.forEach(file => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => {
-          if (single) {
-            setFiles(reader.result);
-          } else {
-            setFiles(prev => [...prev, reader.result]);
-          }
-        };
+        setFiles(file);
       });
     },
     [setFiles]
   );
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    accept: 'image/*',
+    accept: {
+      'image/*': ['.png', '.jpeg', 'jpg', '.gif', '.PNG', '.svg', 'webp'],
+    },
     onDrop,
   });
   return (

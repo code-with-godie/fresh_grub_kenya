@@ -4,12 +4,12 @@ import Home from '../pages/home/Home';
 import Profile from '../pages/profile/Profile';
 import SingleProduct from '../pages/single/SingleProduct';
 import ProtectedLayout from './layout/ProtectedLayout';
-import CreatePost from '../pages/new/CreatePost';
 import UpdateUser from '../pages/update/UpdateDetails';
 import Menus from '../pages/menus/Menus';
 import Orders from '../pages/orders/Orders';
 import RestaurantDishes from '../pages/restaurant/RestaurantDishes';
 import Cart from '../pages/cart/Cart';
+import Partner from '../pages/partner/Partner';
 export const router = createBrowserRouter([
   {
     path: '/',
@@ -36,12 +36,12 @@ export const router = createBrowserRouter([
         element: <ProtectedLayout />,
         children: [
           {
-            path: '/profile',
-            element: <Profile />,
+            path: '/partner',
+            element: <Partner />,
           },
           {
-            path: '/new/post',
-            element: <CreatePost />,
+            path: '/profile',
+            element: <Profile />,
           },
           {
             path: '/update/details',
