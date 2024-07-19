@@ -85,11 +85,14 @@ const Input = styled.input`
   background-color: transparent;
   border: none;
   outline: none;
+  color: ${props => props.theme.color_primary};
 `;
 const Image = styled.img`
-  max-width: 100%;
+  width: 100%;
   height: auto;
-  object-fit: contain;
+  object-fit: cover;
+  max-height: 50vh;
+  border-radius: 0.5rem;
   /* @media screen and (max-width: 600px) {
     max-height: 40vh;
   } */
@@ -103,6 +106,7 @@ const TextArea = styled.textarea`
   border: none;
   min-height: 70px;
   max-height: 150px;
+  color: ${props => props.theme.color_primary};
   resize: vertical;
   overflow: auto;
   outline: none;
