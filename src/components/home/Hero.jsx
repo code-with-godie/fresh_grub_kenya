@@ -72,15 +72,6 @@ const titleVariants = {
     transition: { staggerChildren: 1 },
   },
 };
-// const bottomBtnVariants = {
-//   initial: {
-//     opacity: 0,
-//   },
-//   animate: {
-//     opacity: 1,
-//     transition: { delay: 3.5, staggerChildren: 1 },
-//   },
-// };
 const imageVariants = {
   initial: {
     scale: 0,

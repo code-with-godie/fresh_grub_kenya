@@ -24,6 +24,18 @@ class AppWriteService {
       throw new Error(error);
     }
   }
+  async search(searchTerm) {
+    try {
+      const data = await this.#_database.listDocuments(
+        appwriteConfig.appWriteDatabase,
+        appwriteConfig.appWriteProductCollectionID,
+        [Query.search('title', searchTerm)]
+      );
+      return data.documents;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
   async getTopRestaurant() {
     try {
       const restaurants = await this.#_database.listDocuments(

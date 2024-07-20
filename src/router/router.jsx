@@ -11,6 +11,7 @@ import RestaurantDishes from '../pages/restaurant/RestaurantDishes';
 import Cart from '../pages/cart/Cart';
 import Partner from '../pages/partner/Partner';
 import CreateProduct from '../pages/new/CreateProduct';
+import Search from '../pages/search/Search';
 export const router = createBrowserRouter([
   {
     path: '/',
@@ -31,6 +32,10 @@ export const router = createBrowserRouter([
       {
         path: '/restaurant/:id',
         element: <RestaurantDishes />,
+      },
+      {
+        path: '/search',
+        element: <Search />,
       },
       {
         path: '/',

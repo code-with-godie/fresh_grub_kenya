@@ -64,7 +64,6 @@ const Search = () => {
   const navigate = useNavigate();
   const handleSubmit = e => {
     e.preventDefault();
-    if (title.length <= 0) return;
     navigate(`/search?search=${title}`);
   };
   return (
@@ -91,6 +90,7 @@ const Search = () => {
         <SearchOutlined className='location' />
         <Input
           value={title}
+          required
           onChange={e => setTilte(e.target.value)}
           placeholder='search for a dish'
         />
