@@ -12,6 +12,7 @@ import Cart from '../pages/cart/Cart';
 import Partner from '../pages/partner/Partner';
 import CreateProduct from '../pages/new/CreateProduct';
 import Search from '../pages/search/Search';
+import AccountLayout from './layout/AccountLayout';
 export const router = createBrowserRouter([
   {
     path: '/',
@@ -46,10 +47,6 @@ export const router = createBrowserRouter([
             element: <Partner />,
           },
           {
-            path: '/profile',
-            element: <Profile />,
-          },
-          {
             path: '/update/details',
             element: <UpdateUser />,
           },
@@ -64,6 +61,16 @@ export const router = createBrowserRouter([
           {
             path: '/new',
             element: <CreateProduct />,
+          },
+          {
+            path: '/profile',
+            element: <AccountLayout />,
+            children: [
+              {
+                path: '/profile',
+                element: <Profile />,
+              },
+            ],
           },
         ],
       },

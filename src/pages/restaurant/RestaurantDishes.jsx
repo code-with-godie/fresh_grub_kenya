@@ -2,10 +2,12 @@ import styled from 'styled-components';
 import Filters from '../../components/list/Filters';
 import DishesList from '../../components/list/DishesList';
 import { useCallback, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { appwriteService } from '../../appWrite/appwriteService';
 import LoadingAnimation from '../../components/loading/LoadingAnimation';
 import Error from '../../components/error/Error';
+import { Add } from '@mui/icons-material';
+import { useSelector } from 'react-redux';
 const Container = styled.div``;
 const BannerContainer = styled.div`
   position: relative;
@@ -35,15 +37,35 @@ const Title = styled.h3`
 const Location = styled.p`
   font-size: 1.2rem;
 `;
+const OwnerControl = styled.p`
+  font-size: 1.2rem;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  /* flex-wrap: wrap; */
+  /* max-width: 150px; */
+  padding: 0.5rem;
+  display: flex;
+  gap: 0.5rem;
+  z-index: 100;
+  background-color: #cab054bc;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  color: white;
+`;
 const RestaurantDishes = () => {
   const [restaurant, setRestaurant] = useState(null);
   const params = useParams();
+  const navigate = useNavigate();
+  const { currentUser: user } = useSelector(state => state.user);
+  const [owner, setOwner] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const getRestaurant = useCallback(async () => {
     try {
       setLoading(true);
       const data = await appwriteService.getRestaurant(params?.id);
+      setOwner(user?.$id === data?.owner?.$id);
       setRestaurant(data);
     } catch (error) {
       const mes = error?.message || 'Something went wrong';
@@ -51,7 +73,7 @@ const RestaurantDishes = () => {
     } finally {
       setLoading(false);
     }
-  }, [params]);
+  }, [params, user]);
 
   useEffect(() => {
     getRestaurant();
@@ -77,6 +99,11 @@ const RestaurantDishes = () => {
           <Location>{restaurant?.short_desc} </Location>
           <Location>{restaurant?.street} </Location>
         </TitleContainer>
+        {owner && (
+          <OwnerControl onClick={() => navigate('/new')}>
+            <Add /> add more dishes
+          </OwnerControl>
+        )}
       </BannerContainer>
       <Filters />
       <DishesList dishes={restaurant?.products} />
