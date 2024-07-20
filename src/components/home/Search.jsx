@@ -34,6 +34,7 @@ const Input = styled.input`
   outline: none;
   background: transparent;
   flex: 1;
+  color: inherit;
   font-size: 1rem;
   min-width: 0 !important;
 `;
