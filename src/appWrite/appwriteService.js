@@ -12,6 +12,18 @@ class AppWriteService {
     this.#_database = new Databases(this.#_client);
     this.#_storage = new Storage(this.#_client);
   }
+  async getBestSellingDishes() {
+    try {
+      const restaurants = await this.#_database.listDocuments(
+        appwriteConfig.appWriteDatabase,
+        appwriteConfig.appWriteProductCollectionID,
+        [Query.limit(10), Query.orderDesc('$createdAt')]
+      );
+      return restaurants.documents;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
   async getTopRestaurant() {
     try {
       const restaurants = await this.#_database.listDocuments(
@@ -48,6 +60,18 @@ class AppWriteService {
         appwriteConfig.appWriteRestaurantsCollectionID,
         id
       );
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+  async getSingleUserRestaurants(id) {
+    try {
+      const res = await this.#_database.listDocuments(
+        appwriteConfig.appWriteDatabase,
+        appwriteConfig.appWriteRestaurantsCollectionID,
+        [Query.equal('owner', id), Query.select(['$id', 'name'])]
+      );
+      return res.documents;
     } catch (error) {
       throw new Error(error);
     }

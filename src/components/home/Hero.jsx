@@ -1,11 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 import hero from '../../assets/hero.png';
-import { Edit, Opacity, Phone } from '@mui/icons-material';
+import { Edit, Phone } from '@mui/icons-material';
 import { motion } from 'framer-motion';
 import CustomDescription from './CustomDescription';
 const Container = styled.section`
-  height: 90vh;
+  min-height: 70vh;
   display: flex;
   position: relative;
 `;

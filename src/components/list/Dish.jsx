@@ -13,6 +13,9 @@ const Container = styled.div`
   background: ${props => props.dark && `#181818`};
   box-shadow: ${props => !props.dark && `0px 0px 5px 3px #dad7d7`};
   padding: 0.3rem;
+  &.small {
+    flex-direction: column;
+  }
 `;
 const Left = styled.div``;
 const Right = styled.div`
@@ -23,12 +26,19 @@ const Image = styled.img`
   height: 130px;
   border-radius: 1rem;
   object-fit: cover;
+  &.small {
+    width: 100%;
+    height: 150px;
+  }
 `;
 const Top = styled.div`
   padding: 0.5rem;
   .btn {
     padding: 0.1rem;
     color: var(--color-golden);
+  }
+  .btn.small {
+    display: none;
   }
 `;
 const Bottom = styled.div`
@@ -52,7 +62,11 @@ const Title = styled.h4`
   flex: 1;
   font-weight: 400;
 `;
-const DescriptionContainer = styled.div``;
+const DescriptionContainer = styled.div`
+  &.small {
+    display: none;
+  }
+`;
 const Description = styled.p``;
 const StarWrapper = styled.div`
   display: flex;
@@ -64,7 +78,7 @@ const Price = styled.h4`
   color: var(--color-golden);
   font-size: 1.2rem;
 `;
-const Dish = ({ title, image, description, price, rating, $id }) => {
+const Dish = ({ title, image, description, price, rating, $id, small }) => {
   const { darkMode } = useSelector(state => state.app);
   const { currentUser } = useSelector(state => state.user);
   const navigate = useNavigate();
@@ -105,18 +119,22 @@ const Dish = ({ title, image, description, price, rating, $id }) => {
   }, [currentUser, $id]);
   return (
     <Container
+      className={small && 'small'}
       onClick={() => navigate(`/dish/${$id}`)}
       dark={darkMode}
     >
       <Left>
-        <Image src={image} />
+        <Image
+          className={small && 'small'}
+          src={image}
+        />
       </Left>
       <Right>
         <Top>
           <TitleContainer>
             <Title> {title} </Title>
             <IconButton
-              className='btn'
+              className={small ? 'small btn' : 'btn'}
               onClick={addToFavourite}
             >
               {liked ? <Favorite /> : <FavoriteBorder />}
@@ -125,7 +143,7 @@ const Dish = ({ title, image, description, price, rating, $id }) => {
           <DescriptionContainer>
             <Price>Price (Kshs) : {price} </Price>
           </DescriptionContainer>
-          <DescriptionContainer>
+          <DescriptionContainer className={small && 'small'}>
             <Description>
               {' '}
               {description?.length > 30

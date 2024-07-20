@@ -4,6 +4,7 @@ import Hero from '../../components/home/Hero';
 import LetDoItTogether from '../../components/home/LetDoItTogether';
 import About from '../../components/home/About';
 import Restaurant from '../../components/home/Restaurant';
+import TopDishes from '../../components/home/TopDishes';
 const Container = styled.section`
   /* padding: 0.5rem; */
 `;
@@ -11,6 +12,7 @@ const Home = () => {
   return (
     <Container>
       <Hero />
+      <TopDishes />
       <Restaurant />
       <LetDoItTogether />
       <About />

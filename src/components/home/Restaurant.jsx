@@ -3,11 +3,48 @@ import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { appwriteService } from '../../appWrite/appwriteService';
 const Wrapper = styled.section`
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  overflow: auto;
+`;
+const Container = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  grid-auto-rows: 250px;
+  gap: 2rem 1rem;
+  flex: 1;
+  @media screen and (max-width: 600px) {
+    grid-auto-rows: 200px;
+  }
+`;
+const Item = styled.div`
+  position: relative;
+  cursor: pointer;
+  display: flex;
+`;
+const Right = styled.div`
+  flex: 1;
+  background: #0000008c url(${props => props.bg}) no-repeat center;
+  background-size: cover;
+  background-blend-mode: darken;
+  @media screen and (min-width: 768px) {
+    border-radius: 0.5rem;
+  }
+`;
+const Left = styled.div`
+  flex: 1;
+  position: absolute;
+  bottom: 0;
+  z-index: 100;
+  color: var(--color-golden);
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
 `;
 const Title = styled.h2`
   text-align: center;
@@ -15,45 +52,24 @@ const Title = styled.h2`
   color: var(--color-golden);
   font-size: 2rem;
 `;
-const Container = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 3rem 0.5rem;
-  align-content: flex-start;
-  flex: 1;
-  overflow: auto;
-  height: 100%;
-`;
-const Item = styled.div`
-  padding: 0.5rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.3rem;
-  position: relative;
-  cursor: pointer;
-`;
-const Image = styled.img`
-  width: 150px;
-  height: 150px;
-  object-fit: cover;
-  @media screen and (max-width: 768px) {
-    width: 100%;
-    height: auto;
+const Description = styled.p`
+  @media screen and (min-width: 768px) {
+    font-size: 1.5rem;
   }
 `;
-const Name = styled.p`
+const ShopNow = styled.button`
+  border: 1px solid var(--color-golden);
   padding: 0.5rem 1rem;
-  width: 150px;
-  border-radius: 0.5rem;
-  text-align: center;
-  text-transform: capitalize;
   background-color: var(--color-golden);
-  position: absolute;
-  bottom: -10px;
-  z-index: 10px;
-  @media screen and (max-width: 768px) {
-    width: 100%;
+  outline: none;
+  cursor: pointer;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  text-transform: capitalize;
+  color: white;
+  @media screen and (min-width: 768px) {
+    font-size: 1.5rem;
+    padding: 1rem 3rem;
   }
 `;
 const Restaurant = () => {
@@ -90,8 +106,16 @@ const Restaurant = () => {
             key={item.$id}
             onClick={() => goto(item.$id)}
           >
-            <Image src={item?.image} />
-            <Name> {item.name} </Name>
+            <Right bg={item?.image} />
+            {/* <Image src={item?.image} /> */}
+            <Left>
+              <Title> {item?.name} </Title>
+              <Description> {item?.short_desc} </Description>
+              <ShopNow onClick={() => navigate(`/restaurant/${item?.$id}`)}>
+                {' '}
+                explore and order
+              </ShopNow>
+            </Left>
           </Item>
         ))}
       </Container>

@@ -10,6 +10,7 @@ import Orders from '../pages/orders/Orders';
 import RestaurantDishes from '../pages/restaurant/RestaurantDishes';
 import Cart from '../pages/cart/Cart';
 import Partner from '../pages/partner/Partner';
+import CreateProduct from '../pages/new/CreateProduct';
 export const router = createBrowserRouter([
   {
     path: '/',
@@ -54,6 +55,10 @@ export const router = createBrowserRouter([
           {
             path: '/cart',
             element: <Cart />,
+          },
+          {
+            path: '/new',
+            element: <CreateProduct />,
           },
         ],
       },

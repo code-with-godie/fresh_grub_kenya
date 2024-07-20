@@ -5,8 +5,11 @@ const Container = styled.div`
   grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
   gap: 0.5rem;
   padding: 0.5rem;
+  &.small {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  }
 `;
-const DishesList = ({ dishes = [] }) => {
+const DishesList = ({ dishes = [], small }) => {
   if (dishes.length === 0)
     return (
       <Container>
@@ -14,9 +17,10 @@ const DishesList = ({ dishes = [] }) => {
       </Container>
     );
   return (
-    <Container>
+    <Container className={small && 'small'}>
       {dishes.map(item => (
         <Dish
+          small={small}
           key={item.$id}
           {...item}
         />

@@ -1,8 +1,13 @@
-import { Instagram, LinkedIn, ShoppingCart } from '@mui/icons-material';
-import { Avatar, Badge, IconButton } from '@mui/material';
-import React from 'react';
+import {
+  KeyboardArrowDown,
+  KeyboardArrowUp,
+  ShoppingCart,
+} from '@mui/icons-material';
+import { Badge, IconButton } from '@mui/material';
+import React, { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { BsPersonFillCheck } from 'react-icons/bs';
 import { FaBars, FaMoon, FaSun } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -12,6 +17,7 @@ import {
   toggleTheme,
 } from '../../context/appSlice';
 import { motion } from 'framer-motion';
+import AccountModel from './AccountModel';
 const Container = styled.div`
   display: flex;
   gap: 0.5rem;
@@ -19,7 +25,6 @@ const Container = styled.div`
   align-items: center;
   position: sticky;
   top: 0;
-  /* padding: 0.5rem; */
 
   z-index: 10000;
   background-color: ${props => props.theme.bg_primary};
@@ -107,7 +112,23 @@ const iconsVariants = {
     transition: { staggerChildren: 1 },
   },
 };
-const Topnav = ({ setShowModel }) => {
+const PersonWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: 1px solid var(--color-golden);
+  border-radius: 0.5rem;
+  color: var(--color-golden);
+  padding: 0.5rem;
+  height: 45px;
+  cursor: pointer;
+  position: relative;
+  @media screen and (max-width: 600px) {
+    display: none;
+  }
+`;
+const Name = styled.h4``;
+const Topnav = ({ showProfile, setShowProfile }) => {
   const { darkMode } = useSelector(state => state.app);
   const navigate = useNavigate();
   const { currentUser: user } = useSelector(state => state.user);
@@ -135,27 +156,8 @@ const Topnav = ({ setShowModel }) => {
         <motion.div variants={linkVariants}>
           <NavLink to='/menus'> menu</NavLink>
         </motion.div>
-        <motion.div variants={linkVariants}>
-          <NavLink to='/partner'> partner with us</NavLink>
-        </motion.div>
         {user ? (
-          <>
-            <motion.div variants={linkVariants}>
-              <NavLink to='/orders'>my orders</NavLink>
-            </motion.div>
-            <motion.div variants={linkVariants}>
-              <div
-                onClick={() => setShowModel(true)}
-                style={{ cursor: 'pointer' }}
-              >
-                logout
-              </div>
-            </motion.div>
-            <Avatar
-              alt={user?.username}
-              src={user?.avatar}
-            />
-          </>
+          <></>
         ) : (
           <>
             <motion.div variants={linkVariants}>
@@ -182,32 +184,40 @@ const Topnav = ({ setShowModel }) => {
         initial='initial'
         animate='animate'
       >
-        <motion.div variants={iconsVariants}>
-          {user && (
-            <IconButton
-              className='cart show'
-              // onClick={() => dispatch(toggleTheme())}
-            >
-              <Badge badgeContent={`${amount}`}>
-                <ShoppingCart />
-              </Badge>
-            </IconButton>
-          )}
-        </motion.div>
-        <motion.div variants={iconsVariants}>
-          <IconButton className='btn'>
-            <Instagram className='icon' />
-          </IconButton>
-        </motion.div>
-        <motion.div variants={iconsVariants}>
-          <IconButton className='btn'>
-            <LinkedIn className='icon' />
-          </IconButton>
-        </motion.div>
+        {user ? (
+          <>
+            <motion.div variants={iconsVariants}>
+              <PersonWrapper>
+                <IconButton
+                  className='cart'
+                  // onClick={() => dispatch(toggleTheme())}
+                >
+                  <Badge badgeContent={`${amount}`}>
+                    <ShoppingCart />
+                  </Badge>
+                </IconButton>
+                <Name>Cart</Name>
+              </PersonWrapper>
+            </motion.div>
+            <motion.div variants={iconsVariants}>
+              <PersonWrapper onClick={() => setShowProfile(prev => !prev)}>
+                <BsPersonFillCheck className='icon' />
+                <Name> {user?.username} </Name>
+                {showProfile ? (
+                  <KeyboardArrowUp className='icon' />
+                ) : (
+                  <KeyboardArrowDown className='icon' />
+                )}
+              </PersonWrapper>
+            </motion.div>
+          </>
+        ) : (
+          <></>
+        )}
         <motion.div variants={iconsVariants}>
           <IconButton
-            className='btn'
             onClick={() => dispatch(toggleTheme())}
+            className='btn'
           >
             {darkMode ? (
               <FaMoon className='icon' />
@@ -218,8 +228,8 @@ const Topnav = ({ setShowModel }) => {
         </motion.div>
         <motion.div variants={iconsVariants}>
           <IconButton
-            className='btn show small'
             onClick={() => dispatch(toggleDrawer())}
+            className='btn show small'
           >
             <FaBars />
           </IconButton>

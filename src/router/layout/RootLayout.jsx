@@ -11,10 +11,13 @@ import Register from '../../pages/register/Register';
 import LogoutModel from '../../components/nav/LogoutModel';
 import { getCart, getCartTotal } from '../../context/cartSlice';
 import { getUser } from '../../context/userSlice';
+import BottomNav from '../../components/nav/BottomNav';
+import AccountModel from '../../components/nav/AccountModel';
 
 const Wrapper = styled.main`
   display: flex;
   justify-content: center;
+  position: relative;
   width: 100%;
   color: ${props => props.theme.color_primary};
   background: ${props => props.theme.bg_primary};
@@ -28,6 +31,8 @@ const Container = styled.section`
 `;
 const RootLayout = () => {
   const [showModel, setShowModel] = useState(false);
+  const [showProfile, setShowProfile] = useState(false);
+
   const { login, register } = useSelector(state => state.app);
   const { cartItems } = useSelector(state => state.cart);
   const dispatch = useDispatch();
@@ -44,7 +49,10 @@ const RootLayout = () => {
   return (
     <Wrapper>
       <Container>
-        <Topnav setShowModel={setShowModel} />
+        <Topnav
+          setShowProfile={setShowProfile}
+          showProfile={showProfile}
+        />
         <Sidenav setShowModel={setShowModel} />
         <LogoutModel
           showModel={showModel}
@@ -52,6 +60,10 @@ const RootLayout = () => {
         />
         <Outlet />
         <Footer />
+        <BottomNav
+          setShowProfile={setShowProfile}
+          showProfile={showProfile}
+        />
       </Container>
       {login && (
         <Model center>
@@ -63,6 +75,11 @@ const RootLayout = () => {
           <Register />
         </Model>
       )}
+      <AccountModel
+        setLogoutModel={setShowModel}
+        showModel={showProfile}
+        setShowModel={setShowProfile}
+      />
     </Wrapper>
   );
 };
