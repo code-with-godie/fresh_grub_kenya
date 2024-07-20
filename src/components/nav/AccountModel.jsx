@@ -10,7 +10,7 @@ import styled from 'styled-components';
 import { motion } from 'framer-motion';
 const Container = styled(motion.div)`
   position: absolute;
-  z-index: 1000;
+  z-index: 1000000;
   top: 70px;
   right: 50px;
   border-radius: 0.3rem;

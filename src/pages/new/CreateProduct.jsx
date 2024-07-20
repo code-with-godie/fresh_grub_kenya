@@ -202,13 +202,6 @@ const CreateProduct = () => {
     }
   };
 
-  //   useEffect(() => {
-  //     if (hotel.name.length < 3 || hotel.short.length < 3 || !hotel.street) {
-  //       setDisabled(true);
-  //     } else {
-  //       setDisabled(false);
-  //     }
-  //   }, [hotel]);
   useEffect(() => {
     getHotels();
   }, [getHotels]);
@@ -221,7 +214,6 @@ const CreateProduct = () => {
   if (error)
     return (
       <Wrapper>
-        {' '}
         <Error messege={error} />
       </Wrapper>
     );

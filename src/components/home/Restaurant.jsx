@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { appwriteService } from '../../appWrite/appwriteService';
+import LoadingAnimation from '../loading/LoadingAnimation';
+import Error from '../error/Error';
 const Wrapper = styled.section`
   display: flex;
   flex-direction: column;
@@ -95,8 +97,18 @@ const Restaurant = () => {
   useEffect(() => {
     getRestaurants();
   }, []);
-  if (loading) return <p>loading</p>;
-  if (error) return <p> {error} </p>;
+  if (loading)
+    return (
+      <Wrapper>
+        <LoadingAnimation />
+      </Wrapper>
+    );
+  if (error)
+    return (
+      <Wrapper>
+        <Error messege={error} />
+      </Wrapper>
+    );
   return (
     <Wrapper>
       <Title>top restaurants</Title>

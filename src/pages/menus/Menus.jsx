@@ -4,6 +4,8 @@ import Filters from '../../components/list/Filters';
 import Slider from '../../components/slider/Slider';
 import { useEffect, useState } from 'react';
 import { appwriteService } from '../../appWrite/appwriteService';
+import LoadingAnimation from '../../components/loading/LoadingAnimation';
+import Error from '../../components/error/Error';
 const Container = styled.div`
   display: flex;
   min-height: 70vh;
@@ -38,8 +40,18 @@ const Menus = () => {
   useEffect(() => {
     getRestaurants();
   }, []);
-  if (loading) return <p>loading</p>;
-  if (error) return <p> {error} </p>;
+  if (loading)
+    return (
+      <Container>
+        <LoadingAnimation />
+      </Container>
+    );
+  if (error)
+    return (
+      <Container>
+        <Error messege={error} />
+      </Container>
+    );
   return (
     <Container>
       <Slider restaurant={restaurant} />

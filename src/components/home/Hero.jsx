@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 import hero from '../../assets/hero.png';
-import { Edit, Phone } from '@mui/icons-material';
 import { motion } from 'framer-motion';
 import CustomDescription from './CustomDescription';
+import Search from './Search';
 const Container = styled.section`
   min-height: 70vh;
   display: flex;
@@ -13,10 +13,13 @@ const Left = styled.div`
   position: relative;
   flex: 1;
   display: flex;
-  flex-direction: column;
+  flex-direction: column-reverse;
   gap: 0.5rem;
   z-index: 10;
-  justify-content: center;
+  @media screen and (min-width: 768px) {
+    flex-direction: column;
+    justify-content: center;
+  }
 `;
 const Right = styled.div`
   position: absolute;
@@ -43,55 +46,10 @@ const Title = styled(motion.h1)`
   }
 `;
 const Description = styled(motion.p)``;
-const ControlContainer = styled(motion.div)`
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  flex-wrap: wrap;
-  padding: 0 0.5rem;
-`;
 const TitleContainer = styled(motion.div)`
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-`;
-const Control = styled(motion.button)`
-  outline: none;
-  padding: 0.5rem 1rem;
-  border: 1px solid var(--color-golden);
-  cursor: pointer;
-  outline: none;
-  background-color: transparent;
-  font-size: 1rem;
-  color: inherit;
-  border-radius: 1.5rem;
-  &.custom {
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    display: grid;
-    place-content: center;
-    color: var(--color-golden);
-    :hover {
-      opacity: 0.8;
-    }
-  }
-  &.custom.fill {
-    background-color: white;
-  }
-`;
-const BottomControlsContainer = styled(motion.div)`
-  display: flex;
-  gap: 1rem;
-  align-items: center;
-  padding-top: 2rem;
-  @media screen and (min-width: 768px) {
-    padding-top: 0;
-    position: absolute;
-    z-index: 10;
-    bottom: 1rem;
-    left: 0;
-  }
 `;
 
 const btnVariants = {
@@ -102,7 +60,7 @@ const btnVariants = {
   animate: {
     opacity: 1,
     x: 0,
-    transition: { staggerChildren: 1 },
+    transition: { duration: 1 },
   },
 };
 const titleVariants = {
@@ -114,15 +72,15 @@ const titleVariants = {
     transition: { staggerChildren: 1 },
   },
 };
-const bottomBtnVariants = {
-  initial: {
-    opacity: 0,
-  },
-  animate: {
-    opacity: 1,
-    transition: { delay: 3.5, staggerChildren: 1 },
-  },
-};
+// const bottomBtnVariants = {
+//   initial: {
+//     opacity: 0,
+//   },
+//   animate: {
+//     opacity: 1,
+//     transition: { delay: 3.5, staggerChildren: 1 },
+//   },
+// };
 const imageVariants = {
   initial: {
     scale: 0,
@@ -149,27 +107,7 @@ const Hero = () => {
             The most delicious outdoor food
           </Description>
         </TitleContainer>
-        <ControlContainer
-          variants={btnVariants}
-          initial='initial'
-          animate='animate'
-        >
-          <Control variants={btnVariants}>order now</Control>
-          <Control variants={btnVariants}>location</Control>
-          <Control variants={btnVariants}>seat type</Control>
-        </ControlContainer>
-        <BottomControlsContainer
-          variants={bottomBtnVariants}
-          initial='initial'
-          animate='animate'
-        >
-          <Control className='custom '>
-            <Edit />
-          </Control>
-          <Control className='custom fill'>
-            <Phone />
-          </Control>
-        </BottomControlsContainer>
+        <Search />
       </Left>
       <Right>
         <Image

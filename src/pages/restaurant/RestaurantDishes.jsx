@@ -4,6 +4,8 @@ import DishesList from '../../components/list/DishesList';
 import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { appwriteService } from '../../appWrite/appwriteService';
+import LoadingAnimation from '../../components/loading/LoadingAnimation';
+import Error from '../../components/error/Error';
 const Container = styled.div``;
 const BannerContainer = styled.div`
   position: relative;
@@ -54,19 +56,16 @@ const RestaurantDishes = () => {
   useEffect(() => {
     getRestaurant();
   }, [getRestaurant]);
-
   if (loading)
     return (
       <Container>
-        {' '}
-        <p>loading</p>{' '}
+        <LoadingAnimation />
       </Container>
     );
   if (error)
     return (
       <Container>
-        {' '}
-        <p> {error} </p>{' '}
+        <Error messege={error} />
       </Container>
     );
   return (

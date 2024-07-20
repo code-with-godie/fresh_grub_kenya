@@ -9,6 +9,7 @@ import { decrease, increase } from '../../context/cartSlice';
 import { appwriteService } from '../../appWrite/appwriteService';
 import CartModel from './CartModel';
 import Model from '../../components/models/Model';
+import Error from '../../components/error/Error';
 const Wrapper = styled.div`
   display: flex;
   align-items: center;
@@ -196,13 +197,18 @@ const SingleProduct = () => {
     setProductCart(cart?.cartItems?.find(item => item.$id === product?.$id));
   }, [cart, product]);
 
-  if (loading) {
-    return <LoadingAnimation large />;
-  }
-  if (error) {
-    console.log(error);
-    return <h1>Something went wrong</h1>;
-  }
+  if (loading)
+    return (
+      <Wrapper>
+        <LoadingAnimation />
+      </Wrapper>
+    );
+  if (error)
+    return (
+      <Wrapper>
+        <Error messege={error} />
+      </Wrapper>
+    );
   return (
     <Wrapper>
       <Container>
