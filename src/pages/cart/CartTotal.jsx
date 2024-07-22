@@ -3,6 +3,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import axios from 'axios';
 const Container = styled.div`
   background: ${props => props.dark && `#181818`};
   box-shadow: ${props => !props.dark && `0px 0px 5px 3px #dad7d7`};
@@ -62,7 +63,12 @@ const CartTotal = () => {
   const location = useLocation();
   const check = location?.pathname.includes('/cart');
   const navigate = useNavigate();
-  const { total: cartTotal, tax: cartTax } = useSelector(state => state.cart);
+  const {
+    total: cartTotal,
+    tax: cartTax,
+    cartItems,
+  } = useSelector(state => state.cart);
+  const { currentUser: user } = useSelector(state => state.user);
   const { darkMode } = useSelector(state => state.app);
   let tax = cartTax * cartTotal;
   tax = parseFloat(tax.toFixed(2));
@@ -70,6 +76,22 @@ const CartTotal = () => {
   shipping = parseFloat(shipping.toFixed(2));
   let total = cartTotal + tax + shipping;
   total = parseFloat(total.toFixed(2));
+
+  const handleCheckout = () => {
+    const url = 'https://669e5d2026a68d9b3628.appwrite.global';
+    axios
+      .post(url, {
+        cartItems,
+        userId: user.$id,
+      })
+      .then(response => {
+        if (response.data.url) {
+          window.location.href = response.data.url;
+        }
+      })
+      .catch(err => console.log(err.message));
+  };
+
   return (
     <Container dark={darkMode}>
       <Item>
@@ -89,7 +111,7 @@ const CartTotal = () => {
         <Value> {total} </Value>
       </Item>
       {check && (
-        <Button onClick={() => navigate('/payment')}>
+        <Button onClick={handleCheckout}>
           <ShoppingCartCheckout className='cart' />
           Checkout
         </Button>

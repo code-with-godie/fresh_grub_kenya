@@ -10,6 +10,7 @@ import Orders from '../pages/orders/Orders';
 import RestaurantDishes from '../pages/restaurant/RestaurantDishes';
 import Cart from '../pages/cart/Cart';
 import Partner from '../pages/partner/Partner';
+import Success from '../pages/checkout/Success';
 import CreateProduct from '../pages/new/CreateProduct';
 import Search from '../pages/search/Search';
 import AccountLayout from './layout/AccountLayout';
@@ -45,6 +46,10 @@ export const router = createBrowserRouter([
           {
             path: '/partner',
             element: <Partner />,
+          },
+          {
+            path: '/checkout-success',
+            element: <Success />,
           },
           {
             path: '/update/details',
