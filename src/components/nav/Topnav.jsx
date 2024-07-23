@@ -187,11 +187,8 @@ const Topnav = ({ showProfile, setShowProfile }) => {
         {user ? (
           <>
             <motion.div variants={iconsVariants}>
-              <PersonWrapper>
-                <IconButton
-                  className='cart'
-                  // onClick={() => dispatch(toggleTheme())}
-                >
+              <PersonWrapper onClick={() => navigate('/cart')}>
+                <IconButton className='cart'>
                   <Badge badgeContent={`${amount}`}>
                     <ShoppingCart />
                   </Badge>

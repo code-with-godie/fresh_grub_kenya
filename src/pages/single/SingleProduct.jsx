@@ -10,6 +10,7 @@ import { appwriteService } from '../../appWrite/appwriteService';
 import CartModel from './CartModel';
 import Model from '../../components/models/Model';
 import Error from '../../components/error/Error';
+import { openLoginModel } from '../../context/appSlice';
 const Wrapper = styled.div`
   display: flex;
   align-items: center;
@@ -158,6 +159,7 @@ const ButtonContainer = styled.div`
 const SingleProduct = () => {
   const cart = useSelector(state => state.cart);
   const { darkMode } = useSelector(state => state.app);
+  const { currentUser: user } = useSelector(state => state.user);
   const navigate = useNavigate();
   const [showModel, setShowModel] = useState(false);
   const [product, setProduct] = useState({});
@@ -172,7 +174,13 @@ const SingleProduct = () => {
   const decreaseItem = id => {
     dispatch(decrease(id));
   };
-
+  const handleModel = () => {
+    if (user) {
+      setShowModel(true);
+    } else {
+      dispatch(openLoginModel());
+    }
+  };
   const params = useParams();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -262,12 +270,12 @@ const SingleProduct = () => {
             ) : (
               <ButtonContainer>
                 <Button
-                  onClick={() => setShowModel(true)}
+                  onClick={handleModel}
                   className='order'
                 >
                   order now
                 </Button>
-                <Button onClick={() => setShowModel(true)}>add to cart</Button>
+                <Button onClick={handleModel}>add to cart</Button>
               </ButtonContainer>
             )}
           </Control>

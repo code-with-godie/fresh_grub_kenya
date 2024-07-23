@@ -1,7 +1,8 @@
 remaining
 
 1. add proper icons
-2. css clip path for rider and partner components in home
-3. check the about us component
-4. check how to work with arrays in appwrite so that you implemet filter functionality
-5. complete the profile
+2. check the about us component
+3. check how to work with arrays in appwrite so that you implemet filter functionality
+4. complete the profile
+5. add filter functionality
+6. finish mobile navigation
