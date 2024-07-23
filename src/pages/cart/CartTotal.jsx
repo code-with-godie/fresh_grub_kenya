@@ -80,11 +80,15 @@ const CartTotal = () => {
   const handleCheckout = async () => {
     try {
       setLoading(true);
-      const url = process.env.PAYMENT_URL;
-      const response = await axios.post(url, {
-        cartItems,
-        userId: user.$id,
-      });
+      // const url = process.env.PAYMENT_URL;
+      // console.log(url);
+      const response = await axios.post(
+        'https://node-express-payment-gateway.onrender.com/api/v1/fresh_grub/pay/stripe',
+        {
+          cartItems,
+          userId: user.$id,
+        }
+      );
       if (response.data.url) {
         window.location.href = response.data.url;
       }
