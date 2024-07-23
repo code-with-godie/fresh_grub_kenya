@@ -1,7 +1,7 @@
 import { ShoppingCartCheckout } from '@mui/icons-material';
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
-import { useLocation, useNavigate } from 'react-router-dom';
+import LoadingAnimation from '../../components/loading/LoadingAnimation';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 const Container = styled.div`
@@ -60,9 +60,9 @@ const Button = styled.button`
   }
 `;
 const CartTotal = () => {
-  const location = useLocation();
-  const check = location?.pathname.includes('/cart');
-  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  // const check = location?.pathname.includes('/cart');
   const {
     total: cartTotal,
     tax: cartTax,
@@ -77,19 +77,22 @@ const CartTotal = () => {
   let total = cartTotal + tax + shipping;
   total = parseFloat(total.toFixed(2));
 
-  const handleCheckout = () => {
-    const url = 'https://669e5d2026a68d9b3628.appwrite.global';
-    axios
-      .post(url, {
+  const handleCheckout = async () => {
+    try {
+      setLoading(true);
+      const url = process.env.PAYMENT_URL;
+      const response = await axios.post(url, {
         cartItems,
         userId: user.$id,
-      })
-      .then(response => {
-        if (response.data.url) {
-          window.location.href = response.data.url;
-        }
-      })
-      .catch(err => console.log(err.message));
+      });
+      if (response.data.url) {
+        window.location.href = response.data.url;
+      }
+    } catch (error) {
+      setError(error?.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -110,10 +113,21 @@ const CartTotal = () => {
         <Label>Total</Label>
         <Value> {total} </Value>
       </Item>
-      {check && (
+      {error ? (
+        <h1> {error} </h1>
+      ) : (
         <Button onClick={handleCheckout}>
-          <ShoppingCartCheckout className='cart' />
-          Checkout
+          {loading ? (
+            <>
+              <LoadingAnimation />
+              processing....
+            </>
+          ) : (
+            <>
+              <ShoppingCartCheckout className='cart' />
+              Checkout
+            </>
+          )}
         </Button>
       )}
     </Container>
