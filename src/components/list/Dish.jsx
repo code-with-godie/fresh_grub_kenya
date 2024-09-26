@@ -13,6 +13,7 @@ const Container = styled.div`
   background: ${props => props.dark && `#181818`};
   box-shadow: ${props => !props.dark && `0px 0px 5px 3px #dad7d7`};
   padding: 0.3rem;
+  cursor: pointer;
   &.small {
     flex-direction: column;
   }

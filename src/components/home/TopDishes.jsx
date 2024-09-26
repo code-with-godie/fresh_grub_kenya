@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
 import { appwriteService } from '../../appWrite/appwriteService';
 import DishesList from '../list/DishesList';
-import LoadingAnimation from '../loading/LoadingAnimation';
 import Error from '../error/Error';
+import BestSellingSkeleton from '../skeletons/BestSellingSkeleton';
 const Wrapper = styled.section`
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 1.5rem;
   overflow: auto;
 `;
 const Title = styled.h2`
@@ -18,7 +17,7 @@ const Title = styled.h2`
   font-size: 2rem;
 `;
 const TopDishes = () => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [dishes, setDishes] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setErro] = useState(null);
@@ -34,16 +33,16 @@ const TopDishes = () => {
       setLoading(false);
     }
   };
-  const goto = id => {
-    navigate(`/restaurant/${id}`);
-  };
+  // const goto = id => {
+  //   navigate(`/restaurant/${id}`);
+  // };
   useEffect(() => {
     getRestaurants();
   }, []);
   if (loading)
     return (
       <Wrapper>
-        <LoadingAnimation />
+        <BestSellingSkeleton />
       </Wrapper>
     );
   if (error)

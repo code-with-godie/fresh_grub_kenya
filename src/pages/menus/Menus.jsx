@@ -4,7 +4,7 @@ import Filters from '../../components/list/Filters';
 import Slider from '../../components/slider/Slider';
 import { useEffect, useState } from 'react';
 import { appwriteService } from '../../appWrite/appwriteService';
-import LoadingAnimation from '../../components/loading/LoadingAnimation';
+import MenusSKeleton from '../../components/skeletons/MenusSkeleton';
 import Error from '../../components/error/Error';
 const Container = styled.div`
   display: flex;
@@ -43,7 +43,7 @@ const Menus = () => {
   if (loading)
     return (
       <Container>
-        <LoadingAnimation />
+        <MenusSKeleton />
       </Container>
     );
   if (error)

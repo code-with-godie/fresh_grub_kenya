@@ -26,7 +26,7 @@ const Wrapper = styled.main`
 `;
 const Container = styled.section`
   flex: 1;
-  max-width: 1000px;
+  max-width: 1500px;
   overflow: auto;
 `;
 const RootLayout = () => {
@@ -43,6 +43,7 @@ const RootLayout = () => {
     dispatch(getUser());
     dispatch(getCart());
   }, [dispatch]);
+  useEffect(() => {}, []);
   useEffect(() => {
     console.log('cart changed', cartItems);
   }, [cartItems]);

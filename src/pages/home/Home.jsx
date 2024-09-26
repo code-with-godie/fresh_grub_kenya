@@ -7,6 +7,9 @@ import Restaurant from '../../components/home/Restaurant';
 import TopDishes from '../../components/home/TopDishes';
 const Container = styled.section`
   /* padding: 0.5rem; */
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 `;
 const Home = () => {
   return (

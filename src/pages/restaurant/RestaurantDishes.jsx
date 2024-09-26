@@ -4,25 +4,27 @@ import DishesList from '../../components/list/DishesList';
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { appwriteService } from '../../appWrite/appwriteService';
-import LoadingAnimation from '../../components/loading/LoadingAnimation';
 import Error from '../../components/error/Error';
 import { Add } from '@mui/icons-material';
 import { useSelector } from 'react-redux';
+import MenusSkeleton from '../../components/skeletons/MenusSkeleton';
 const Container = styled.div``;
 const BannerContainer = styled.div`
   position: relative;
+  padding: 0.5rem;
 `;
 
 const Image = styled.img`
   max-height: 300px;
   width: 100%;
   object-fit: cover;
+  border-radius: 0.5rem;
   /* opacity: 0.7; */
 `;
 const TitleContainer = styled.div`
   position: absolute;
-  bottom: 0;
-  left: 0;
+  bottom: 1rem;
+  left: 1rem;
   padding: 0.5rem;
   display: flex;
   flex-direction: column;
@@ -81,7 +83,7 @@ const RestaurantDishes = () => {
   if (loading)
     return (
       <Container>
-        <LoadingAnimation />
+        <MenusSkeleton />
       </Container>
     );
   if (error)
@@ -106,7 +108,10 @@ const RestaurantDishes = () => {
         )}
       </BannerContainer>
       <Filters />
-      <DishesList dishes={restaurant?.products} />
+      <DishesList
+        owner={owner}
+        dishes={restaurant?.products}
+      />
     </Container>
   );
 };

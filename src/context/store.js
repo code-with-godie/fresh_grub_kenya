@@ -5,7 +5,7 @@ import cartReducer from './cartSlice';
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 const persistConfig = {
-  key: 'root',
+  key: 'jumia-root',
   storage,
 };
 
@@ -17,10 +17,3 @@ const rootReducers = combineReducers({
 const persistedReducer = persistReducer(persistConfig, rootReducers);
 export const store = configureStore({ reducer: persistedReducer });
 export const persistor = persistStore(store);
-// export const store = configureStore({
-//   reducer: {
-//     user: userReducer,
-//     app: appReducer,
-//     cart: cartReducer,
-//   },
-// });

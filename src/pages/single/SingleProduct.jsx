@@ -11,6 +11,7 @@ import CartModel from './CartModel';
 import Model from '../../components/models/Model';
 import Error from '../../components/error/Error';
 import { openLoginModel } from '../../context/appSlice';
+import SinglePostSkelton from '../../components/skeletons/SinglePostSkeleton';
 const Wrapper = styled.div`
   display: flex;
   align-items: center;
@@ -208,7 +209,7 @@ const SingleProduct = () => {
   if (loading)
     return (
       <Wrapper>
-        <LoadingAnimation />
+        <SinglePostSkelton />
       </Wrapper>
     );
   if (error)
