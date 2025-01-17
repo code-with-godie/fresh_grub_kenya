@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import Marquee from 'react-fast-marquee';
 import { useNavigate } from 'react-router-dom';
 import { appwriteService } from '../../appWrite/appwriteService';
 import Error from '../error/Error';

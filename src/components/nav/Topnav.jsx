@@ -4,7 +4,7 @@ import {
   ShoppingCart,
 } from '@mui/icons-material';
 import { Badge, IconButton } from '@mui/material';
-import React, { useState } from 'react';
+import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { BsPersonFillCheck } from 'react-icons/bs';
@@ -17,10 +17,10 @@ import {
   toggleTheme,
 } from '../../context/appSlice';
 import { motion } from 'framer-motion';
-import AccountModel from './AccountModel';
 const Container = styled.div`
   display: flex;
   gap: 0.5rem;
+  padding: 0.5rem;
   justify-content: space-between;
   align-items: center;
   position: sticky;

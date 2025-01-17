@@ -150,11 +150,17 @@ const CartItems = () => {
             </DescriptionWrapper>
             <DescriptionWrapper>
               <SmallLable>Soda:</SmallLable>
-              <SmallLableDescription>{item?.soda} </SmallLableDescription>
+
+              <SmallLableDescription>
+                {item?.soda?.join(' , ')}
+              </SmallLableDescription>
             </DescriptionWrapper>
             <DescriptionWrapper>
-              <SmallLable>Size:</SmallLable>
-              <SmallLableDescription>{item?.size} </SmallLableDescription>
+              <SmallLable>Size(s):</SmallLable>
+
+              <SmallLableDescription>
+                {item?.size?.join(' , ')}
+              </SmallLableDescription>
             </DescriptionWrapper>
             <ButtonWrapper>
               <DescriptionWrapper>

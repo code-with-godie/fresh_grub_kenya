@@ -4,7 +4,7 @@ const initialState = {
   total: 0,
   cartItems: [],
   loading: false,
-  tax: 0.015,
+  tax: 0.0075,
   error: null,
   pending: false,
 };

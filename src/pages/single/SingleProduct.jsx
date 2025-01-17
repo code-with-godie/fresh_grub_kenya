@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { useNavigate, useParams } from 'react-router-dom';
-import LoadingAnimation from '../../components/loading/LoadingAnimation';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Rating } from '@mui/material';
 import { KeyboardArrowDown, KeyboardArrowUp } from '@mui/icons-material';
 import { useDispatch, useSelector } from 'react-redux';
@@ -17,14 +16,19 @@ const Wrapper = styled.div`
   align-items: center;
   justify-content: center;
   padding: 0.5rem;
-  overflow: auto;
+  @media screen and (min-width: 768px) {
+    height: 100%;
+    overflow: auto;
+  }
 `;
 const Container = styled.div`
   display: flex;
   width: 100%;
   max-width: 900px;
+  gap: 1rem;
   flex-direction: column;
   @media screen and (min-width: 768px) {
+    overflow: auto;
     height: 80vh;
     flex-direction: row;
   }
@@ -33,6 +37,10 @@ const ImageContainer = styled.div`
   flex: 1;
   display: flex;
   background-color: ${props => (props.dark ? `#0e0d0d` : `#f3f2f2`)};
+  @media screen and (min-width: 768px) {
+    position: sticky;
+    top: 0;
+  }
 `;
 const Image = styled.img`
   max-width: 100%;
@@ -131,9 +139,7 @@ const IngredientContainer = styled.ul`
   color: ${props => props.theme.color_golden};
   list-style-type: lower-roman;
 `;
-const Ingredient = styled.li`
-  font-weight: 200;
-`;
+const Ingredient = styled.li``;
 const SizeContainer = styled.div`
   display: flex;
   align-items: center;
@@ -227,6 +233,12 @@ const SingleProduct = () => {
         <DescriptionContainer>
           <Title> {product?.name} </Title>
           <Price>Price Kshs: {product?.price} </Price>
+          <Link
+            style={{ textDecoration: 'none' }}
+            to={`/restaurant/${product?.restaurant?.$id}`}
+          >
+            <Description> {product?.restaurant?.name} </Description>
+          </Link>
           <Rating
             readOnly
             value={product?.rating}
@@ -280,11 +292,11 @@ const SingleProduct = () => {
               </ButtonContainer>
             )}
           </Control>
-          {product?.ingridients?.length > 0 && (
+          {product?.ingredients?.length > 0 && (
             <>
               <Title>Ingredients</Title>
               <IngredientContainer>
-                {product?.ingridients?.map((item, index) => (
+                {product?.ingredients?.map((item, index) => (
                   <Ingredient key={index}> {item} </Ingredient>
                 ))}
               </IngredientContainer>
@@ -292,7 +304,7 @@ const SingleProduct = () => {
           )}
           {product?.instructions?.length > 0 && (
             <>
-              <Title>Instructions</Title>
+              <Title>Preparation nstructions</Title>
               <IngredientContainer>
                 {product?.instructions?.map((item, index) => (
                   <Ingredient key={index}> {item} </Ingredient>

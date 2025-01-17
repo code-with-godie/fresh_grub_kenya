@@ -8,6 +8,7 @@ import Error from '../../components/error/Error';
 import { Add } from '@mui/icons-material';
 import { useSelector } from 'react-redux';
 import MenusSkeleton from '../../components/skeletons/MenusSkeleton';
+import Map from '../../components/map/Map';
 const Container = styled.div``;
 const BannerContainer = styled.div`
   position: relative;
@@ -19,13 +20,12 @@ const Image = styled.img`
   width: 100%;
   object-fit: cover;
   border-radius: 0.5rem;
-  /* opacity: 0.7; */
+  opacity: 0.6;
 `;
 const TitleContainer = styled.div`
   position: absolute;
   bottom: 1rem;
   left: 1rem;
-  padding: 0.5rem;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
@@ -55,14 +55,38 @@ const OwnerControl = styled.p`
   cursor: pointer;
   color: white;
 `;
+const ListContainer = styled.div`
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  @media screen and (min-width: 768px) {
+    flex-direction: row;
+  }
+`;
 const RestaurantDishes = () => {
   const [restaurant, setRestaurant] = useState(null);
   const params = useParams();
   const navigate = useNavigate();
   const { currentUser: user } = useSelector(state => state.user);
   const [owner, setOwner] = useState(false);
+  const [filters, setFilters] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const handleFilters = useCallback(products => {
+    const categories = [];
+    products.forEach(item => {
+      const cats = item.categories;
+      cats.forEach(category => {
+        if (!categories.includes(category)) {
+          categories.push(category);
+        }
+      });
+    });
+    console.log('res filters', categories);
+
+    setFilters(categories);
+  }, []);
   const getRestaurant = useCallback(async () => {
     try {
       setLoading(true);
@@ -80,6 +104,11 @@ const RestaurantDishes = () => {
   useEffect(() => {
     getRestaurant();
   }, [getRestaurant]);
+  useEffect(() => {
+    if (restaurant) {
+      handleFilters(restaurant?.products);
+    }
+  }, [restaurant, handleFilters]);
   if (loading)
     return (
       <Container>
@@ -107,11 +136,18 @@ const RestaurantDishes = () => {
           </OwnerControl>
         )}
       </BannerContainer>
-      <Filters />
+      <Filters filters={filters | []} />
+      {/* <ListContainer>
+        <div style={{ flex: 2 }}>
+        </div>
+        </ListContainer> */}
       <DishesList
         owner={owner}
         dishes={restaurant?.products}
       />
+      <div style={{ flex: 1, height: '500px', padding: '1rem' }}>
+        {restaurant && <Map posts={[restaurant]} />}
+      </div>
     </Container>
   );
 };

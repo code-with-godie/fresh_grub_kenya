@@ -5,10 +5,14 @@ import styled from 'styled-components';
 
 const Container = styled.div`
   display: flex;
+  flex-direction: column;
   height: 90vh;
   width: 100%;
   gap: 1rem;
   padding: 1rem;
+  @media screen and (min-width: 768px) {
+    flex-direction: row;
+  }
 `;
 const Wrapper = styled.div`
   flex: 1;

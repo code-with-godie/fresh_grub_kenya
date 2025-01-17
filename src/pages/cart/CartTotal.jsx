@@ -80,20 +80,31 @@ const CartTotal = () => {
   const handleCheckout = async () => {
     try {
       setLoading(true);
-      // const url = process.env.PAYMENT_URL;
-      // console.log(url);
+      console.log(cartItems);
       const response = await axios.post(
-        'https://node-express-payment-gateway.onrender.com/api/v1/fresh_grub/pay/stripe',
+        'http://localhost:5000/api/v1/fresh_grub/pay/stripe',
         {
           cartItems,
           userId: user.$id,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
         }
       );
+      console.log('res', response);
+
       if (response.data.url) {
         window.location.href = response.data.url;
+      } else {
+        setError('Checkout URL not found in the response.');
       }
     } catch (error) {
-      setError(error?.message);
+      console.error('Checkout error:', error);
+      setError(
+        error.response?.data?.message || 'An error occurred during checkout.'
+      );
     } finally {
       setLoading(false);
     }
@@ -106,7 +117,7 @@ const CartTotal = () => {
         <Value>Kshs {cartTotal} </Value>
       </Item>
       <Item>
-        <Label>Tax(5%)</Label>
+        <Label>VAT</Label>
         <Value>Ksh. {tax} </Value>
       </Item>
       <Item>

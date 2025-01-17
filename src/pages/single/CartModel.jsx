@@ -20,10 +20,10 @@ const Container = styled(motion.div)`
   max-width: 700px;
   overflow: auto;
   padding: 0.5rem;
-  overflow: auto;
   display: flex;
   flex-direction: column;
   gap: 0.3rem;
+  overflow: auto;
   @media screen and (min-width: 768px) {
     max-height: 70vh;
   }
@@ -43,14 +43,19 @@ const Left = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.3rem;
-  overflow: auto;
+  @media screen and (min-width: 768px) {
+    overflow: auto;
+  }
 `;
 const Right = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  overflow: auto;
+  padding: 0.5rem;
+  @media screen and (min-width: 768px) {
+    overflow: auto;
+  }
 `;
 const ItemWrapper = styled.div`
   display: flex;
@@ -106,8 +111,9 @@ const ImageContainer = styled.div`
 const Image = styled.img`
   width: 100%;
   height: auto;
+  border-radius: 0.5rem;
   object-fit: cover;
-  max-height: 200px;
+  max-height: 170px;
 `;
 
 const DescriptionContainer = styled.div`
@@ -121,6 +127,7 @@ const ButtonContainer = styled.div`
   gap: 0.5rem;
   align-items: center;
   flex: 1;
+  padding-bottom: 1rem;
 `;
 const QualityWrapper = styled.div`
   display: flex;
@@ -144,12 +151,12 @@ const Button = styled.button`
   justify-content: center;
   border-radius: 0.5rem;
   flex: 1;
-  font-size: 1.3rem;
+  font-size: 1.1rem;
   font-weight: bold;
   text-transform: capitalize;
   cursor: pointer;
   .cart {
-    font-size: 2rem;
+    font-size: 1.5rem;
   }
   &:disabled {
     cursor: not-allowed;
@@ -207,7 +214,7 @@ const CartModel = ({
   const { darkMode } = useSelector(state => state.app);
   const { currentUser: user } = useSelector(state => state.user);
   const dispatch = useDispatch();
-  const [size, setSize] = useState(null);
+  const [size, setSize] = useState([]);
   const [flavour, setFlavour] = useState(null);
   const flavours = ['regular', 'spicy'];
   const sodas = [
@@ -217,7 +224,7 @@ const CartModel = ({
     'fanta passion',
     'fanta black current',
   ];
-  const [soda, setSoda] = useState(null);
+  const [soda, setSoda] = useState([]);
   const increaseItem = id => {
     dispatch(increase(id));
   };
@@ -283,17 +290,17 @@ const CartModel = ({
             <ItemWrapper>
               <Title>Choose prefered size</Title>
               <Description>
-                Choose one . <span className='required'>required</span>
+                Choose size(s) . <span className='required'>required</span>
               </Description>
               {productSizes?.map((item, index) => (
                 <Item
                   className={size === item && 'selected'}
                   key={index}
                   dark={darkMode}
-                  onClick={() => setSize(item)}
+                  onClick={() => setSize(prev => [...prev, item])}
                 >
                   <Label> {item} </Label>{' '}
-                  {size === item ? (
+                  {size.includes(item) ? (
                     <Done className='icon' />
                   ) : (
                     <Add className='icon' />
@@ -304,18 +311,15 @@ const CartModel = ({
           )}
           <ItemWrapper>
             <Title>Choose a soda flavour</Title>
-            <Description>
-              Choose one . <span className='required'>required</span>
-            </Description>
             {sodas.map((item, index) => (
               <Item
                 className={soda === item && 'selected'}
                 key={index}
                 dark={darkMode}
-                onClick={() => setSoda(item)}
+                onClick={() => setSoda(prev => [...prev, item])}
               >
                 <Label> {item} </Label>{' '}
-                {soda === item ? (
+                {soda.includes(item) ? (
                   <Done className='icon' />
                 ) : (
                   <Add className='icon' />
@@ -368,9 +372,7 @@ const CartModel = ({
                 order now
               </Button>
               <Button
-                disabled={
-                  !soda || !flavour || (productSizes.length > 0 && !size)
-                }
+                disabled={!flavour || (productSizes.length > 0 && !size)}
                 onClick={addCartItem}
               >
                 add to cart

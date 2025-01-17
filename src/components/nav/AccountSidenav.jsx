@@ -1,10 +1,5 @@
-import {
-  FavoriteBorderOutlined,
-  Person2Outlined,
-  Reviews,
-} from '@mui/icons-material';
+import { FavoriteBorderOutlined, Person2Outlined } from '@mui/icons-material';
 import React from 'react';
-import { BiEnvelope } from 'react-icons/bi';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { authService } from '../../appWrite/auth';
@@ -17,7 +12,7 @@ const Container = styled.div`
     background-color: ${props => props.theme.bg_white};
     display: flex;
     flex-direction: column;
-    border: 1px solid var(--color-golden);
+    gap: 0.5rem;
     overflow: auto;
     &.wrapper {
       border-bottom: 1px solid var(--color-golden);
@@ -29,16 +24,17 @@ const Container = styled.div`
 `;
 const Item = styled.div`
   padding: 0.5rem;
+  background-color: var(--color-golden);
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  color: white;
   cursor: pointer;
   .icon {
     font-size: 1.7rem;
   }
   :hover {
     background-color: var(--color-golden);
-    color: white;
   }
 `;
 const ItemLabel = styled.p`
@@ -70,7 +66,7 @@ const AccountSidenav = () => {
       <Container className='wrapper'>
         <Item onClick={() => navigate('/profile')}>
           <Person2Outlined className='icon' />
-          <ItemLabel>fresh Grub account</ItemLabel>
+          <ItemLabel>ccount</ItemLabel>
         </Item>
         <Item onClick={() => navigate('/profile/restaurants')}>
           <Person2Outlined className='icon' />

@@ -16,7 +16,6 @@ const Container = styled.div`
   .active {
     font-size: 1.2rem;
     color: var(--color-golden) !important;
-    border: 1px solid var(--color-golden);
   }
   .link {
     text-decoration: none;

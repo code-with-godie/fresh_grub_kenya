@@ -6,6 +6,8 @@ import { useEffect, useState } from 'react';
 import { appwriteService } from '../../appWrite/appwriteService';
 import MenusSKeleton from '../../components/skeletons/MenusSkeleton';
 import Error from '../../components/error/Error';
+import { useCallback } from 'react';
+import BestSellingSkeleton from '../../components/skeletons/BestSellingSkeleton';
 const Container = styled.div`
   display: flex;
   min-height: 70vh;
@@ -22,14 +24,29 @@ const Right = styled.div`
 const Menus = () => {
   const [restaurant, setRestaurants] = useState([]);
   const [products, setProducts] = useState([]);
+  const [filters, setFilters] = useState([]);
+  const [query, setQuery] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [searching, setSearching] = useState(false);
   const [error, setErro] = useState(null);
+  const filterProducts = useCallback(async () => {
+    try {
+      setSearching(true);
+      const products = await appwriteService.filterProducts(query);
+      setProducts(products);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setSearching(false);
+    }
+  }, [query]);
   const getRestaurants = async () => {
     try {
       setLoading(true);
       const data = await appwriteService.getAllMenus();
-      setRestaurants(data[0]);
-      setProducts(data[1]);
+      setRestaurants(data.restaurants);
+      setProducts(data.products);
+      setFilters(data.categories);
     } catch (error) {
       const mes = error?.message || 'Something wennt wrong';
       setErro(mes);
@@ -40,6 +57,11 @@ const Menus = () => {
   useEffect(() => {
     getRestaurants();
   }, []);
+  useEffect(() => {
+    if (query?.length > 0) {
+      filterProducts();
+    }
+  }, [query, filterProducts]);
   if (loading)
     return (
       <Container>
@@ -56,10 +78,19 @@ const Menus = () => {
     <Container>
       <Slider restaurant={restaurant} />
       <Left>
-        <Filters row />
+        <Filters
+          query={query}
+          setQuery={setQuery}
+          filters={filters}
+          row
+        />
       </Left>
       <Right>
-        <DishesList dishes={products} />
+        {searching ? (
+          <BestSellingSkeleton large />
+        ) : (
+          <DishesList dishes={products} />
+        )}
       </Right>
     </Container>
   );

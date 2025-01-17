@@ -29,7 +29,33 @@ class AppWriteService {
       const data = await this.#_database.listDocuments(
         appwriteConfig.appWriteDatabase,
         appwriteConfig.appWriteProductCollectionID,
-        [Query.search('title', searchTerm)]
+        [
+          Query.or([
+            Query.search('title', searchTerm),
+            Query.contains('categories', searchTerm),
+          ]),
+        ]
+      );
+      return data.documents;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+  async filterProducts(filters) {
+    try {
+      let query = [];
+      if (!filters?.includes('all')) {
+        query = [
+          Query.or([
+            Query.contains('title', filters),
+            Query.contains('categories', filters),
+          ]),
+        ];
+      }
+      const data = await this.#_database.listDocuments(
+        appwriteConfig.appWriteDatabase,
+        appwriteConfig.appWriteProductCollectionID,
+        query
       );
       return data.documents;
     } catch (error) {
@@ -60,7 +86,21 @@ class AppWriteService {
         appwriteConfig.appWriteProductCollectionID,
         [Query.limit(30)]
       );
-      return [restaurants.documents, products.documents];
+      const categories = [];
+
+      products.documents.forEach(item => {
+        const cats = item.categories;
+        cats.forEach(category => {
+          if (!categories.includes(category)) {
+            categories.push(category);
+          }
+        });
+      });
+      return {
+        restaurants: restaurants.documents,
+        products: products.documents,
+        categories,
+      };
     } catch (error) {
       throw new Error(error);
     }
@@ -102,7 +142,8 @@ class AppWriteService {
   async createRestaurant(restaurant) {
     try {
       //upload the restaurant image
-      const { image: file, short, latitude, longitude, ...data } = restaurant;
+      const { image: file, short, city, country, ...data } = restaurant;
+      if (!file) throw new Error('Restaurant image is required');
       var image = await this.uploadFile(file);
       if (!image) throw new Error('image not uploaded');
 
@@ -113,15 +154,58 @@ class AppWriteService {
         await this.deleteFile(image.$id);
         throw new Error('no image url');
       }
+      const tempHotel = {
+        ...data,
+        short_desc: short,
+        longitude: city?.longitude,
+        latitude: city?.latitude,
+        country: country?.name,
+        city: country?.name,
+        image: url,
+        imageRef: image.$id,
+      };
       const res = await this.#_database.createDocument(
         appwriteConfig.appWriteDatabase,
         appwriteConfig.appWriteRestaurantsCollectionID,
         ID.unique(),
-        {
-          ...data,
-          short_desc: short,
-          image: url,
-        }
+        tempHotel
+      );
+      if (!res) {
+        await this.deleteFile(image.$id);
+      }
+      return res;
+    } catch (error) {
+      if (url) {
+        await this.deleteFile(image.$id);
+      }
+      throw new Error(error);
+    }
+  }
+  async createDish(dish) {
+    try {
+      //upload the dish image
+      const { image: file, ...data } = dish;
+      if (!file) throw new Error('Dish image is required');
+      var image = await this.uploadFile(file);
+      if (!image) throw new Error('image not uploaded');
+
+      //get dish image url
+      var url = this.getFilePreview(image.$id);
+      //delete the images because it may be corrupted
+      if (!url) {
+        await this.deleteFile(image.$id);
+        throw new Error('no image url');
+      }
+      const tempDish = {
+        ...data,
+        image: url,
+        imageID: image.$id,
+      };
+      const res = await this.#_database.createDocument(
+        appwriteConfig.appWriteDatabase,
+        appwriteConfig.appWriteProductCollectionID,
+        ID.unique(),
+        tempDish
       );
       if (!res) {
         await this.deleteFile(image.$id);

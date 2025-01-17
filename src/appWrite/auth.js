@@ -15,13 +15,14 @@ class AuthService {
   }
   async loginWithCredentials({ email, password }) {
     try {
-      // let user = await this.getUser();
-      // console.log('auth', user);
-      // if (user?.email) {
-      //   console.log('already logged in');
-      //   return await this.getUserByEmailAddress(user?.email);
-      // }
-      const user = await this.getUserByEmailAddress(email);
+      let user = await this.getUser();
+      console.log('auth', user);
+      if (user?.email) {
+        console.log('already logged in');
+        return await this.getUserByEmailAddress(user?.email);
+      }
+      console.log('not logged in loggin in');
+      user = await this.getUserByEmailAddress(email);
       if (!user) throw new Error('invalid email');
       const session = await this.#_account.createEmailPasswordSession(
         email,
@@ -96,7 +97,8 @@ class AuthService {
     try {
       return await this.#_account.get();
     } catch (error) {
-      throw new Error(error);
+      // throw new Error(error);
+      return null;
     }
   }
   async createAccount(user) {

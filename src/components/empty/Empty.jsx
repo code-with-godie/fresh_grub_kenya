@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import nodish from '../../assets/nodish.png';
+import FlatwareIcon from '@mui/icons-material/Flatware';
 const Container = styled.div`
   min-height: 35vh;
   width: 100vw;
@@ -19,7 +20,7 @@ const Messege = styled.h2`
 const Empty = ({ messege = 'no dishes yet', owner }) => {
   return (
     <Container>
-      {owner ? <Image src={nodish} /> : <Image src={nodish} />}
+      <FlatwareIcon fontSize='large' />
       <Messege> {owner ? 'you have not added any dish yet' : messege} </Messege>
     </Container>
   );

@@ -18,7 +18,7 @@ const Container = styled(motion.div)`
   display: flex;
   flex-direction: column;
   background-color: ${props => props.theme.bg_primary};
-  box-shadow: 0px 0px 5px 3px ${props => (props.dark ? '#2f2e2eb6' : '#dad7d7')};
+  box-shadow: 0px 0px 5px 3px ${props => (props.dark ? '#141414b6' : '#ececec')};
   padding: 1rem;
   gap: 0.5rem;
   .desc {

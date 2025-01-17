@@ -1,12 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
-import hero from '../../assets/hero.png';
+import hero from '../../assets/hero.jpg';
 import { motion } from 'framer-motion';
 import CustomDescription from './CustomDescription';
 import Search from './Search';
 const Container = styled.section`
   min-height: 70vh;
   display: flex;
+  padding: 1rem;
   position: relative;
 `;
 const Left = styled.div`

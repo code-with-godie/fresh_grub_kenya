@@ -1,6 +1,10 @@
 import React, { useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 import styled from 'styled-components';
+import { Bounce, toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useSelector } from 'react-redux';
+
 const Wrapper = styled.div`
   display: flex;
   align-items: center;
@@ -10,6 +14,7 @@ const Wrapper = styled.div`
     height: 120px;
   }
 `;
+
 const Container = styled.div`
   padding: 0.5rem;
   flex: 1;
@@ -22,6 +27,7 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
 `;
+
 const Select = styled.div`
   background-color: var(--color-golden);
   padding: 0.5rem 1rem;
@@ -29,7 +35,9 @@ const Select = styled.div`
   cursor: pointer;
   color: #000000dc;
 `;
+
 const DropZone = ({ setFiles, description }) => {
+  const { darkMode } = useSelector(state => state.app);
   const onDrop = useCallback(
     acceptedFiles => {
       acceptedFiles.forEach(file => {
@@ -38,12 +46,36 @@ const DropZone = ({ setFiles, description }) => {
     },
     [setFiles]
   );
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    accept: {
-      'image/*': ['.png', '.jpeg', 'jpg', '.gif', '.PNG', '.svg', 'webp'],
-    },
-    onDrop,
-  });
+
+  const { getRootProps, getInputProps, isDragActive, fileRejections } =
+    useDropzone({
+      accept: {
+        'image/png': ['.png'],
+        'image/jpeg': ['.jpeg', '.jpg'],
+        'image/svg+xml': ['.svg'],
+        'image/webp': ['.webp'],
+      },
+      onDrop,
+      maxSize: 5 * 1024 * 1024, // 5MB
+      onDropRejected: fileRejections => {
+        fileRejections.forEach(({ errors }) => {
+          errors.forEach(err => {
+            toast.error(err.message, {
+              position: 'bottom-right',
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: `${darkMode ? 'dark' : 'light'}`,
+              transition: Bounce,
+            });
+          });
+        });
+      },
+    });
+
   return (
     <Wrapper>
       <Container {...getRootProps()}>
@@ -52,11 +84,12 @@ const DropZone = ({ setFiles, description }) => {
           <p>Drop the files here ...</p>
         ) : (
           <>
-            <p> {description} </p>
-            <Select>click to select a file</Select>
+            <p>{description}</p>
+            <Select>Click to select a file</Select>
           </>
         )}
       </Container>
+      <ToastContainer />
     </Wrapper>
   );
 };
